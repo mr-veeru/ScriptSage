@@ -1,0 +1,36 @@
+# Core dependencies
+flask==2.3.3
+flask-cors==4.0.0
+python-dotenv==1.0.0
+scikit-learn==1.3.2
+pandas==2.1.4
+numpy==1.26.3
+joblib==1.3.2
+tqdm==4.66.1
+
+# AST parsing libraries
+astroid==3.0.2
+libcst==1.1.0
+
+# Optional advanced features
+# transformers==4.36.2  # Uncomment for CodeBERT features
+
+# Code highlighting and parsing
+pygments==2.16.1
+
+# Data visualization
+matplotlib==3.8.2
+seaborn==0.13.1
+
+# HTML parsing
+beautifulsoup4==4.12.2
+html5lib==1.1
+lxml==4.9.3
+
+# Development dependencies
+pytest==7.4.3
+black==23.12.1
+
+# Type checking
+mypy==1.8.0
+types-requests==2.31.0.20231231 
