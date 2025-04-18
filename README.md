@@ -69,6 +69,7 @@ ScriptSage is an intelligent code analysis and documentation tool that automatic
 scriptsage/
 ├── backend/                  # Backend server and ML components
 │   ├── api/                  # REST API endpoints
+│   ├── core/                 # Core functionality
 │   │   ├── language_analyzer.py    # Language detection logic
 │   │   ├── train_models.py         # Model training code
 │   │   └── data_preprocessing.py   # Data processing utilities
@@ -97,6 +98,20 @@ ScriptSage uses a comprehensive pipeline to collect code samples:
 4. **Quality Filtering**: Removes low-quality or duplicate samples
 5. **Metadata Tagging**: Preserves information about language, source, and initial purpose
 
+**Commands:**
+
+```bash
+# Collect samples from GitHub repositories
+python backend/scripts/collect_samples.py --source github --languages python,javascript,typescript --max-samples 5000
+
+# Collect samples from local codebase
+python backend/scripts/collect_samples.py --source local --path /path/to/your/codebase --output backend/data/raw
+
+# Collect samples from public datasets
+python backend/scripts/collect_samples.py --source datasets --datasets rosetta-code,code-jam --output backend/data/raw
+```
+
+Sample data collection workflow:
 ```python
 # Sample data collection workflow
 def collect_samples(sources, max_samples=10000):
@@ -118,6 +133,23 @@ Before training, data undergoes several preprocessing steps:
 4. **Augmentation**: Generates additional training examples for rare classes
 5. **Splitting**: Creates training, validation, and test sets
 
+**Commands:**
+
+```bash
+# Preprocess all collected samples
+python backend/scripts/preprocess_data.py --input backend/data/raw --output backend/data/processed
+
+# Clean and normalize code samples
+python backend/scripts/preprocess_data.py --clean-only --input backend/data/raw --output backend/data/cleaned
+
+# Generate augmented samples for underrepresented classes
+python backend/scripts/augment_data.py --input backend/data/processed --output backend/data/augmented
+
+# Split data into training and testing sets
+python backend/scripts/split_data.py --input backend/data/processed --output backend/data/split --test-size 0.2
+```
+
+Data preprocessing workflow:
 ```python
 # Data preprocessing workflow
 def preprocess_samples(samples):
@@ -141,6 +173,23 @@ ScriptSage trains two primary models:
    - Pattern-based feature enrichment
    - Cross-validation to ensure generalization
 
+**Commands:**
+
+```bash
+# Train all models with default settings
+python backend/core/train_models.py
+
+# Train only the language classifier with hyperparameter optimization
+python backend/core/train_models.py --model language --optimize
+
+# Train only the purpose classifier with custom settings
+python backend/core/train_models.py --model purpose --max-features 30000 --n-estimators 300
+
+# Train with a specific dataset
+python backend/core/train_models.py --data backend/data/processed/custom_dataset.json
+```
+
+Model training with hyperparameter optimization:
 ```python
 # Model training with hyperparameter optimization
 def train_purpose_classifier(X, y):
@@ -168,6 +217,45 @@ Both models undergo rigorous evaluation:
 3. **Per-Class Metrics**: Precision, recall, and F1-score for each class
 4. **Confusion Matrix**: Detailed analysis of classification errors
 5. **Real-World Testing**: Evaluation on unseen production code
+
+**Commands:**
+
+```bash
+# Evaluate all models on test data
+python backend/scripts/evaluate_models.py
+
+# Evaluate specific model with detailed metrics
+python backend/scripts/evaluate_models.py --model purpose --detailed
+
+# Generate confusion matrix visualization
+python backend/scripts/evaluate_models.py --model language --confusion-matrix --output plots/confusion_matrix.png
+
+# Run cross-validation on models
+python backend/scripts/cross_validate.py --model purpose --folds 5 --iterations 3
+
+# Test models on custom dataset
+python backend/scripts/evaluate_models.py --data path/to/custom/test/data.json
+```
+
+Example evaluation script:
+```python
+# Evaluate model performance
+def evaluate_model(model, X_test, y_test):
+    y_pred = model.predict(X_test)
+    
+    # Calculate metrics
+    accuracy = accuracy_score(y_test, y_pred)
+    report = classification_report(y_test, y_pred, output_dict=True)
+    
+    # Create confusion matrix
+    cm = confusion_matrix(y_test, y_pred)
+    
+    return {
+        'accuracy': accuracy,
+        'classification_report': report,
+        'confusion_matrix': cm
+    }
+```
 
 ## 📊 Model Performance
 
