@@ -1,6 +1,5 @@
 import sys
 import os
-import json
 
 # Add the parent directory to sys.path so we can import backend modules
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))

@@ -30,13 +30,12 @@ wheels/
 
 # ScriptSage specific
 # Data files
-backend/core/data/
-backend/utils/data/
-backend/utils/data/augmented/
+backend/data/
+backend/data/augmented/
+backend/data/online_samples/
 
 # Model files
 backend/models/
-backend/core/models/
 
 # Logs
 logs/

@@ -23,10 +23,10 @@ logger = logging.getLogger(__name__)
 # Ensure logs directory exists
 os.makedirs(os.path.join(os.path.dirname(__file__), 'logs'), exist_ok=True)
 
-# Ensure model and data directories exist
-os.makedirs(os.path.join(os.path.dirname(__file__), 'core', 'models'), exist_ok=True)
-os.makedirs(os.path.join(os.path.dirname(__file__), 'core', 'data'), exist_ok=True)
-os.makedirs(os.path.join(os.path.dirname(__file__), 'core', 'data', 'augmented'), exist_ok=True)
+# Ensure model and data directories exist in the backend root directory
+os.makedirs(os.path.join(os.path.dirname(__file__), 'models'), exist_ok=True)
+os.makedirs(os.path.join(os.path.dirname(__file__), 'data'), exist_ok=True)
+os.makedirs(os.path.join(os.path.dirname(__file__), 'data', 'augmented'), exist_ok=True)
 
 def run_server(host='0.0.0.0', port=5000, debug=False):
     """Run the Flask server"""

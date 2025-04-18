@@ -7,7 +7,6 @@ Run this script to execute all tests in the test suite
 import os
 import sys
 import unittest
-import importlib
 from importlib import util
 
 # Add the parent directory to the path so we can import from the backend modules

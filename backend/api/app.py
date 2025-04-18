@@ -7,7 +7,10 @@ import tempfile
 
 # Update the import paths to match the new structure
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from core.language_analyzer import analyze_code, predict_language, train_models, rebuild_models
+from core.language_analyzer import analyze_code, predict_language
+from core.train_models import main as train_models
+from core.data_collection import fetch_all_language_samples
+from core.data_preprocessing import preprocess_code_samples, augment_training_data
 from core.ast_analyzer import parse_code_structure, calculate_complexity_metrics, AST_PARSING_AVAILABLE
 
 # Set up logging
@@ -156,15 +159,43 @@ def get_languages():
 @app.route('/api/train', methods=['POST'])
 def train():
     """Train ML models endpoint"""
-    force_retrain = request.json.get('force', False) if request.json else False
-    train_models(force=force_retrain)
-    return jsonify({'status': 'success', 'message': 'Models trained successfully'})
+    try:
+        force_retrain = request.json.get('force', False) if request.json else False
+        
+        # Run the complete ML pipeline
+        if force_retrain:
+            # Step 1: Collect data
+            fetch_all_language_samples()
+            
+            # Step 2: Preprocess and augment data
+            preprocess_code_samples()
+            augment_training_data()
+            
+            # Step 3: Train models
+            train_models()
+        else:
+            # Only train models using existing data
+            train_models()
+            
+        return jsonify({'status': 'success', 'message': 'Models trained successfully'})
+    except Exception as e:
+        logger.error(f"Error during model training: {e}")
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @app.route('/api/rebuild', methods=['POST'])
 def rebuild():
     """Rebuild ML models endpoint"""
-    rebuild_models()
-    return jsonify({'status': 'success', 'message': 'Models rebuilt successfully'})
+    try:
+        # Run complete pipeline
+        fetch_all_language_samples()
+        preprocess_code_samples()
+        augment_training_data()
+        train_models()
+        
+        return jsonify({'status': 'success', 'message': 'Models rebuilt successfully'})
+    except Exception as e:
+        logger.error(f"Error during model rebuilding: {e}")
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @app.route('/', methods=['GET'])
 def home():
