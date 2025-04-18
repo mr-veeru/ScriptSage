@@ -1,296 +1,233 @@
 # 🧙‍♂️ ScriptSage
 
-> **Your intelligent code analysis companion**
-
-![Python](https://img.shields.io/badge/python-3.8+-green.svg)
-![React](https://img.shields.io/badge/react-18.2.0-61DAFB.svg)
-![Status](https://img.shields.io/badge/status-active-success.svg)
-
-## ✨ Overview
-
-ScriptSage is an advanced code analysis tool that uses machine learning to understand, evaluate, and summarize code across multiple programming languages. Drop in your code and let ScriptSage work its magic!
-
 <div align="center">
-  <img src="https://via.placeholder.com/800x450?text=ScriptSage+Screenshot" alt="ScriptSage Screenshot" width="80%" />
-</div>
-
-## 🚀 Features
-
-- **Multi-language Support** - Intelligently detects and analyzes Python, JavaScript, TypeScript, HTML, CSS, and more
-- **Code Purpose Detection** - Identifies whether code is for data processing, web UI, API endpoints, etc.
-- **Smart Summarization** - Generates concise, human-readable summaries of code functionality
-- **Complexity Analysis** - Evaluates code structure and complexity metrics
-- **Modern UI** - Beautiful, responsive interface for uploading and analyzing code
-- **Advanced ML Models** - Leverages CodeBERT and other state-of-the-art models for deeper insights
-
-## 🔧 Tech Stack
-
-### Backend
-- **Python** - Core application logic
-- **Flask** - RESTful API server
-- **scikit-learn** - Machine learning algorithms
-- **Pygments** - Syntax highlighting and language detection
-- **AST Parsing** - Code structure analysis
-
-### Frontend
-- **React** - UI components and state management
-- **TypeScript** - Type-safe code
-- **Material UI** - Modern component library
-- **react-textarea-code-editor** - Code editing with syntax highlighting
-
-## 📊 Data Pipeline
-
-### Data Collection
-
-ScriptSage's ML models require diverse code samples to train effectively. There are multiple ways to collect training data:
-
-1. **Automated GitHub Collection**
-   ```bash
-   cd backend
-   # Set GitHub token for higher rate limits (optional)
-   export GITHUB_TOKEN=your_token_here
-   
-   # Collect samples for all supported languages
-   python -m core.data_collection
-   
-   # Collect samples for specific languages (edit the script parameters)
-   python -c "from core.data_collection import fetch_all_language_samples; fetch_all_language_samples(languages=['Python', 'JavaScript'], samples_per_language=30)"
-   ```
-
-2. **Manual Collection**
-   - Place code samples in the appropriate directories:
-     ```
-     backend/data/
-     ├── Python/
-     │   ├── web_ui/
-     │   ├── data_processing/
-     │   └── api/
-     ├── JavaScript/
-     │   ├── web_ui/
-     │   └── utility/
-     └── ...
-     ```
-
-3. **Stack Overflow Collection**
-   ```bash
-   python -c "from core.data_collection import fetch_stackoverflow_samples; fetch_stackoverflow_samples('Python', num_samples=20)"
-   ```
-
-### Data Cleaning and Preprocessing
-
-ScriptSage preprocesses raw code samples to prepare them for training:
-
-1. **Clean Code Samples**
-   ```bash
-   # Preprocess all collected samples
-   python -m core.data_preprocessing
-   ```
-
-2. **Data Augmentation**
-   ```bash
-   # Augment existing samples to improve model training
-   python -c "from core.data_preprocessing import augment_training_data; augment_training_data()"
-   ```
-
-3. **Manual Cleaning**
-   - Remove large comment blocks
-   - Remove binary/non-text content
-   - Ensure proper file extensions
-   - Verify language labels
-
-### Model Training
-
-Train the ML models used by ScriptSage for code analysis:
-
-1. **Train All Models**
-   ```bash
-   cd backend
-   python -m core.train_models
-   ```
-
-2. **Train Language Classifier Only**
-   ```bash
-   python -c "from core.train_models import train_language_classifier; train_language_classifier(samples, optimize=True)"
-   ```
-
-3. **Train Purpose Classifier Only**
-   ```bash
-   python -c "from core.train_models import train_purpose_classifier; train_purpose_classifier(samples, optimize=True)"
-   ```
-
-### Model Testing and Evaluation
-
-Evaluate the performance of your trained models:
-
-1. **Test Language Classifier**
-   ```bash
-   python -c "from core.language_analyzer import predict_language; print(predict_language('def hello(): print(\"Hello, world!\")'))"
-   ```
-
-2. **Test Purpose Classifier**
-   ```bash
-   python -c "from core.language_analyzer import predict_purpose; print(predict_purpose('function fetchData() { return fetch(\"/api/data\").then(res => res.json()); }'))"
-   ```
-
-3. **Comprehensive Model Evaluation**
-   ```bash
-   python -m core.evaluate_models
-   ```
-
-4. **Test on Sample Files**
-   ```bash
-   python -c "from core.language_analyzer import analyze_code; print(analyze_code(open('path/to/sample.py').read()))"
-   ```
-
-5. **Run Dedicated Test Suite**
-   ```bash
-   # Run all tests
-   cd backend
-   python tests/run_all_tests.py
-   
-   # Run specific test modules
-   python tests/test_ml.py     # Test ML models
-   python tests/test_ast.py    # Test AST analysis
-   python tests/test_api.py    # Test API endpoints
-   ```
-
-The test suite includes:
-- `test_ml.py`: Tests language and purpose detection accuracy
-- `test_ast.py`: Tests code structure parsing and complexity metrics
-- `test_api.py`: Tests the backend API endpoints and integration
-
-## 🏁 Running the Project
-
-Get ScriptSage up and running:
-
-### Quick Start
-
-The easiest way to get ScriptSage running is to use the quickstart script:
-
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/scriptsage.git
-cd scriptsage
-
-# Run the quickstart script with frontend and server
-python quickstart.py --with-frontend --start-server
-```
-
-### Manual Setup
-
-#### Backend
-
-```bash
-# Navigate to backend directory
-cd backend
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Start the server
-python run.py
-```
-
-#### Frontend
-
-```bash
-# Navigate to frontend directory
-cd frontend
-
-# Install dependencies
-npm install
-
-# Start development server
-npm start
-```
-
-### Using ScriptSage
-
-1. Open your browser to http://localhost:3000
-2. Upload or paste your code
-3. View the analysis results
-4. Explore the visualizations and insights
-
-### Troubleshooting
-
-- **Import Errors**: Ensure your Python path includes the backend directory
-  ```bash
-  # In Windows
-  set PYTHONPATH=%PYTHONPATH%;C:\path\to\scriptsage\backend
   
-  # In Linux/Mac
-  export PYTHONPATH=$PYTHONPATH:/path/to/scriptsage/backend
-  ```
-
-- **Model Loading Errors**: Ensure models are trained before starting the server
-  ```bash
-  cd backend
-  python core/train_models.py
-  ```
-
-- **Frontend Connection Issues**: Check that backend API is running and CORS is enabled
-  ```bash
-  # Test backend API
-  curl http://localhost:5000/api/health
-  ```
-
-## 🧠 How It Works
-
-1. **Language Detection** - ScriptSage first analyzes your code to determine its programming language using pattern matching and machine learning.
-
-2. **Purpose Identification** - The system then classifies the code's purpose (e.g., utility function, UI component, data processing).
-
-3. **Structure Analysis** - AST (Abstract Syntax Tree) parsing extracts the code's structure, patterns, and complexity metrics.
-
-4. **Advanced Processing** - For deeper insights, ScriptSage can use transformers-based models like CodeBERT to understand semantic meaning.
-
-5. **Result Generation** - The analysis is compiled into a comprehensive report with helpful visualizations and suggestions.
-
-## 📁 Project Structure
-
-```
-scriptsage/
-├── backend/
-│   ├── api/                  # Flask API endpoints
-│   ├── core/                 # Code analysis engine
-│   │   ├── language_analyzer.py  # Main analysis logic
-│   │   ├── ast_analyzer.py   # Code structure analysis
-│   │   ├── data_collection.py    # Data gathering
-│   │   ├── data_preprocessing.py # Data cleaning and augmentation
-│   │   ├── train_models.py   # Model training
-│   │   ├── evaluate_models.py    # Model evaluation
-│   │   └── predict.py        # Inference and prediction
-│   ├── data/                 # Training data
-│   ├── models/               # ML model storage
-│   ├── tests/                # Backend tests
-│   └── logs/                 # Application logs
-├── frontend/
-│   ├── public/               # Static assets
-│   └── src/                  # React components
-│       ├── components/       # UI components
-│       └── App.tsx           # Main application
-└── quickstart.py             # Setup automation
-```
-
-## 🔮 Future Plans
-
-- **Code Suggestion** - AI-powered recommendations for code improvements
-- **More Languages** - Expanded support for additional programming languages
-- **Integration** - VS Code extension and Git integration
-- **Custom Models** - Train models on your own codebase for personalized insights
-
-## 👨‍💻 Author
-
-This project was created and developed entirely by a single developer as a personal project.
-
-## 🙏 Acknowledgements
-
-- [CodeBERT](https://github.com/microsoft/CodeBERT) by Microsoft Research
-- [Tree-sitter](https://tree-sitter.github.io/tree-sitter/) for robust parsing
-- All the open-source dependencies that made this project possible
+  [![Python](https://img.shields.io/badge/Python-3.8%2B-blue?style=for-the-badge&logo=python)](https://www.python.org/)
+  [![Machine Learning](https://img.shields.io/badge/ML-Powered-orange?style=for-the-badge&logo=tensorflow)](https://scikit-learn.org/)
+  [![Code Analysis](https://img.shields.io/badge/Code-Analysis-green?style=for-the-badge&logo=code)](https://github.com)
+  
+  **Automated Code Understanding and Documentation System**
+</div>
 
 ---
 
-<div align="center">
-  <p>Made with ❤️ for developers who appreciate good code</p>
-</div> 
+## 🔮 Overview
+
+ScriptSage is an intelligent code analysis and documentation tool that automatically understands and documents your codebase. Using advanced machine learning models, it analyzes code patterns, identifies purposes, and generates comprehensive documentation - saving developers countless hours of manual documentation work.
+
+<details>
+<summary>✨ <b>Key Benefits</b></summary>
+<br>
+
+- **Time Saving**: Automate what would take hours manually
+- **Consistency**: Generate standardized documentation
+- **Insight**: Discover patterns in your codebase
+- **Onboarding**: Help new developers understand the codebase faster
+- **Maintenance**: Keep documentation in sync with code changes
+
+</details>
+
+## 🌟 Features
+
+- **🔍 Intelligent Code Analysis**: Automatically detects code patterns and purposes
+- **🌐 Multi-language Support**: Works with various programming languages
+- **🧩 Purpose Classification**: Identifies code segments as:
+  - 🧮 Algorithm Implementations
+  - 🖌️ UI Components
+  - 🎨 Styling
+  - 🔌 API Endpoints
+  - 📊 Data Processing
+  - 🛠️ Utility Functions
+  - 💾 Database Operations
+  - 🧪 Testing Code
+- **📝 Automated Documentation**: Generates clear and structured documentation
+- **⚙️ Customizable Analysis**: Configurable parameters for different codebases
+
+## 🚀 Quick Start
+
+1. **Installation**
+   ```bash
+   git clone https://github.com/yourusername/scriptsage.git
+   cd scriptsage
+   pip install -r backend/requirements.txt
+   ```
+
+2. **Configuration**
+   ```bash
+   cp backend/.env.example backend/.env
+   # Edit .env with your configuration
+   ```
+
+3. **Run the Application**
+   ```bash
+   python backend/run.py
+   ```
+
+## 📂 Project Structure
+
+```
+scriptsage/
+├── backend/                  # Backend server and ML components
+│   ├── api/                  # REST API endpoints
+│   │   ├── language_analyzer.py    # Language detection logic
+│   │   ├── train_models.py         # Model training code
+│   │   └── data_preprocessing.py   # Data processing utilities
+│   ├── data/                 # Training and test data
+│   │   ├── raw/              # Raw collected code samples
+│   │   └── processed/        # Preprocessed datasets
+│   ├── models/               # Trained ML models
+│   │   ├── language_classifier.pkl  # Language classification model
+│   │   └── purpose_classifier.pkl   # Purpose classification model
+│   ├── tests/                # Test suite
+│   │   ├── test_api.py       # API tests
+│   │   └── fix_purpose_classifier.py # Tests for purpose classifier
+│   └── run.py                # Main entry point
+└── frontend/                 # Web interface (if applicable)
+```
+
+## 🔄 Data Pipeline
+
+### 📥 Data Collection
+
+ScriptSage uses a comprehensive pipeline to collect code samples:
+
+1. **Source Diversity**: Collects code from various repositories
+2. **Language Coverage**: Ensures samples from multiple programming languages
+3. **Purpose Variety**: Gathers examples of different code purposes
+4. **Quality Filtering**: Removes low-quality or duplicate samples
+5. **Metadata Tagging**: Preserves information about language, source, and initial purpose
+
+```python
+# Sample data collection workflow
+def collect_samples(sources, max_samples=10000):
+    samples = []
+    for source in sources:
+        raw_samples = fetch_from_source(source)
+        filtered_samples = filter_quality_samples(raw_samples)
+        samples.extend(filtered_samples[:max_samples // len(sources)])
+    return samples
+```
+
+### 🔧 Data Preprocessing
+
+Before training, data undergoes several preprocessing steps:
+
+1. **Cleaning**: Removes comments, extra whitespace, and irrelevant content
+2. **Tokenization**: Breaks code into meaningful tokens
+3. **Feature Extraction**: Converts code to numerical features
+4. **Augmentation**: Generates additional training examples for rare classes
+5. **Splitting**: Creates training, validation, and test sets
+
+```python
+# Data preprocessing workflow
+def preprocess_samples(samples):
+    cleaned = [clean_code(sample) for sample in samples]
+    augmented = augment_rare_classes(cleaned)
+    return split_data(augmented)
+```
+
+### 🧠 Model Training
+
+ScriptSage trains two primary models:
+
+1. **Language Classifier**:
+   - RandomForestClassifier with TF-IDF features
+   - Character-level n-grams for language pattern recognition
+   - Optimized hyperparameters via GridSearchCV
+
+2. **Purpose Classifier**:
+   - GradientBoostingClassifier with TF-IDF features
+   - Word-level n-grams for semantic understanding
+   - Pattern-based feature enrichment
+   - Cross-validation to ensure generalization
+
+```python
+# Model training with hyperparameter optimization
+def train_purpose_classifier(X, y):
+    pipeline = Pipeline([
+        ('vectorizer', TfidfVectorizer(max_features=20000)),
+        ('classifier', GradientBoostingClassifier())
+    ])
+    
+    param_grid = {
+        'vectorizer__ngram_range': [(1, 2), (1, 3), (1, 4)],
+        'classifier__n_estimators': [100, 200, 300]
+    }
+    
+    grid_search = GridSearchCV(pipeline, param_grid, cv=5)
+    grid_search.fit(X, y)
+    return grid_search.best_estimator_
+```
+
+### 🧪 Testing and Evaluation
+
+Both models undergo rigorous evaluation:
+
+1. **Cross-Validation**: 5-fold cross-validation for robust metrics
+2. **Accuracy Measurement**: Overall classification accuracy
+3. **Per-Class Metrics**: Precision, recall, and F1-score for each class
+4. **Confusion Matrix**: Detailed analysis of classification errors
+5. **Real-World Testing**: Evaluation on unseen production code
+
+## 📊 Model Performance
+
+The system uses advanced machine learning techniques:
+
+- **Gradient Boosting Classifier** for purpose detection
+  - 200 estimators for ensemble strength
+  - Learning rate of 0.1 for optimal convergence
+  - Max depth of 5 to prevent overfitting
+
+- **TF-IDF Vectorization** with optimized parameters
+  - 20,000 max features for comprehensive vocabulary
+  - Word n-grams from 1 to 4 to capture phrases
+  - Minimum document frequency of 2 to filter rare tokens
+  - English stop words removal for cleaner features
+
+- **Cross-validation** for robust evaluation
+  - 5-fold stratified splits
+  - Preserved class distribution
+  - Multiple random seeds for stability
+
+- **Hyperparameter Optimization**
+  - Grid search over key parameters
+  - Parallel processing for efficiency
+  - Best parameter selection based on accuracy
+
+## ⚙️ Configuration
+
+Key configuration options in `backend/.env`:
+
+```env
+# Model settings
+MODEL_PATH=./models
+MAX_FEATURES=20000
+NGRAM_RANGE=1,4
+
+# Training settings
+OPTIMIZE_HYPERPARAMS=True
+CROSS_VALIDATION_FOLDS=5
+TEST_SIZE=0.2
+
+# Application settings
+LOG_LEVEL=INFO
+API_HOST=0.0.0.0
+API_PORT=5000
+```
+
+## 📈 Future Improvements
+
+ScriptSage is continuously evolving with planned enhancements:
+
+- **Deep Learning Models**: Transformer-based code understanding
+- **Multilingual Support**: Expanded language coverage
+- **Interactive Documentation**: Dynamic exploration of code relationships
+- **IDE Integration**: Real-time analysis within development environments
+- **Code Generation**: Automated documentation string creation
+
+## 🔗 Support
+
+For support, please:
+1. Check the documentation
+2. Open an issue
+3. Contact the maintainer 
